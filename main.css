@@ -1,0 +1,18 @@
+#background {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+}
+
+#time {
+  font-size: 80px;
+  color: white;
+  font-family: Arial;
+}
+
+#weather {
+  font-size: 30px;
+  color: white;
+  font-family: Arial;
+}
