@@ -14,8 +14,8 @@ body {
   background-size: cover;
   background-position: center;
   background-color: #0d0d1a;
+  opacity: 0;
 }
-
 
 .gloss {
   position: absolute;
@@ -47,7 +47,6 @@ body {
   letter-spacing: 1px;
 }
 
-
 #quote-box {
   position: absolute;
   bottom: 3vw;
@@ -74,7 +73,6 @@ body {
   margin-top: 0.3rem;
   letter-spacing: 1px;
 }
-
 
 #apod-credit {
   position: absolute;
