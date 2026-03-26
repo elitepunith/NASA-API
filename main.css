@@ -1,18 +1,87 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+}
+
 #background {
   width: 100vw;
   height: 100vh;
   background-size: cover;
   background-position: center;
+  background-color: #0d0d1a;
+}
+
+
+.gloss {
+  position: absolute;
+  top: 2vw;
+  right: 2vw;
+  background: rgba(200, 210, 230, 0.22);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 1.2rem 2rem 1.4rem 2rem;
+  text-align: center;
 }
 
 #time {
-  font-size: 80px;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
   color: white;
-  font-family: Arial;
+  letter-spacing: 2px;
 }
 
 #weather {
-  font-size: 30px;
+  font-size: clamp(0.9rem, 2vw, 1.4rem);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
   color: white;
-  font-family: Arial;
+  margin-top: 0.5rem;
+  letter-spacing: 1px;
+}
+
+
+#quote-box {
+  position: absolute;
+  bottom: 3vw;
+  left: 2.5vw;
+  max-width: 38vw;
+  background: rgba(0, 0, 0, 0.35);
+  border-left: 3px solid rgba(255,255,255,0.5);
+  padding: 0.7rem 1rem;
+  border-radius: 0 8px 8px 0;
+}
+
+#quote-text {
+  font-family: Georgia, serif;
+  font-size: clamp(0.7rem, 1.2vw, 1rem);
+  color: rgba(255, 255, 255, 0.85);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+#quote-author {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.3rem;
+  letter-spacing: 1px;
+}
+
+
+#apod-credit {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.2rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
 }

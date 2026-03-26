@@ -1,59 +1,114 @@
-// ---- background from NASA ----
-async function getBackground() {
-  const url = "OwbV0ePzkKAlfWcjEvw6BwRBB2lwlEr9AAlIizDh";
+
+
+
+var NASA_KEY = "OwbV0ePzkKAlfWcjEvw6BwRBB2lwlEr9AAlIizDh";
+
+
+async function loadBackground() {
+  var url = "https://api.nasa.gov/planetary/apod?api_key=" + NASA_KEY;
 
   try {
-    const response = await fetch(url);
-    const result = await response.json();
+    var response = await fetch(url);
+    if (!response.ok) throw new Error("nasa fetch failed: " + response.status);
 
-    if (result.media_type === "image") {
-      document.getElementById("background").style.backgroundImage = `url('${result.url}')`;
+    var data = await response.json();
+
+    if (data.media_type != "image") {
+      console.log("today apod is a video, cant use it");
+      return;
     }
 
-  } catch (error) {
-    console.log(error);
+    document.getElementById("background").style.backgroundImage = "url('" + data.url + "')";
+
+    if (data.copyright) {
+      document.getElementById("apod-credit").innerText = "📡 " + data.title + "  ©" + data.copyright.trim();
+    } else {
+      document.getElementById("apod-credit").innerText = "📡 " + data.title;
+    }
+
+  } catch (err) {
+    console.log("background error:", err.message);
   }
 }
 
 
-function updateTime() {
-  const now = new Date();
+function updateClock() {
+  var now = new Date();
 
-  let h = String(now.getHours()).padStart(2, "0");
-  let m = String(now.getMinutes()).padStart(2, "0");
-  let s = String(now.getSeconds()).padStart(2, "0");
+  var h = String(now.getHours()).padStart(2, "0");
+  var m = String(now.getMinutes()).padStart(2, "0");
+  var s = String(now.getSeconds()).padStart(2, "0");
 
-  document.getElementById("time").innerText = `${h}:${m}:${s}`;
+  document.getElementById("time").innerText = h + ":" + m + ":" + s;
 }
 
-setInterval(updateTime, 1000);
+updateClock();
+setInterval(updateClock, 1000);
 
-async function getWeather(lat, lon) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,windspeed_10m`;
+
+async function loadWeather(lat, lon) {
+  var url = "https://api.open-meteo.com/v1/forecast"
+    + "?latitude=" + lat
+    + "&longitude=" + lon
+    + "&current=temperature_2m,precipitation_probability,windspeed_10m"
+    + "&temperature_unit=celsius&windspeed_unit=kmh&timezone=auto";
 
   try {
-    const response = await fetch(url);
-    const result = await response.json();
+    var response = await fetch(url);
+    if (!response.ok) throw new Error("weather fetch failed");
 
-    const temp = result.current.temperature_2m;
-    const wind = result.current.windspeed_10m;
+    var data = await response.json();
+    var c = data.current;
 
-    document.getElementById("weather").innerText = `${temp}°C  |  ${wind} km/h wind`;
+    var temp = Math.round(c.temperature_2m);
+    var rain = c.precipitation_probability;
+    var wind = Math.round(c.windspeed_10m);
 
-  } catch (error) {
-    console.log(error);
+    document.getElementById("weather").innerText = rain + "%  " + temp + "°C  " + wind + " KM/H";
+
+  } catch (err) {
+    console.log("weather error:", err.message);
+    document.getElementById("weather").innerText = "weather unavailable";
   }
 }
 
 function askLocation() {
-  navigator.geolocation.getCurrentPosition(function(pos) {
-    getWeather(pos.coords.latitude, pos.coords.longitude);
-  });
+  if (!navigator.geolocation) {
+    document.getElementById("weather").innerText = "no location access";
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      loadWeather(pos.coords.latitude, pos.coords.longitude);
+    },
+    function() {
+      document.getElementById("weather").innerText = "location denied";
+    }
+  );
+}
+
+
+async function loadQuote() {
+  try {
+    var response = await fetch("https://api.quotable.io/random?maxLength=120");
+    if (!response.ok) throw new Error("quote fetch failed");
+
+    var data = await response.json();
+
+    document.getElementById("quote-text").innerText = '"' + data.content + '"';
+    document.getElementById("quote-author").innerText = "— " + data.author;
+
+  } catch (err) {
+    
+    console.log("quote error:", err.message);
+    document.getElementById("quote-box").style.display = "none";
+  }
 }
 
 
 window.onload = function() {
-  getBackground();
-  updateTime();
+  loadBackground();
   askLocation();
+  loadQuote();
 };
