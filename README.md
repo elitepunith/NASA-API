@@ -1,6 +1,12 @@
-# My Browser Homepage
+# NASA API
 
-A personal browser homepage I built while learning web development.
+A smart browser homepage that pulls the latest 7 images from NASA and smoothly fades between them every 8 seconds.
+
+Top-right: live clock + local weather
+Bottom-left: random quote (refreshes on each new tab)
+
+# Preview
+![gallery](screenshot.png)
 
 ## What it does
 
@@ -24,4 +30,3 @@ APIs used:
 2. Open `index.html` in any browser
 3. Allow location access when the browser asks (for weather)
 
-That's it, no installs needed.
